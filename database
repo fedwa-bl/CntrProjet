@@ -1,0 +1,187 @@
+-- phpMyAdmin SQL Dump
+-- version 5.1.0
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : 127.0.0.1
+-- Généré le : sam. 22 jan. 2022 à 11:24
+-- Version du serveur :  10.4.18-MariaDB
+-- Version de PHP : 7.3.27
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de données : `g_chambres`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `chambre`
+--
+
+CREATE TABLE `chambre` (
+  `id` int(11) NOT NULL,
+  `numero` int(11) NOT NULL,
+  `type` varchar(32) NOT NULL,
+  `prix` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `chambre`
+--
+
+INSERT INTO `chambre` (`id`, `numero`, `type`, `prix`) VALUES
+(2, 200, 'simple', '200'),
+(3, 12, 'double', '500');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `client`
+--
+
+CREATE TABLE `client` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(32) NOT NULL,
+  `prenom` varchar(32) NOT NULL,
+  `numTele` varchar(32) NOT NULL,
+  `etat` varchar(32) NOT NULL DEFAULT '0',
+  `login` varchar(32) NOT NULL,
+  `password` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `client`
+--
+
+INSERT INTO `client` (`id`, `nom`, `prenom`, `numTele`, `etat`, `login`, `password`) VALUES
+(4, 'hadi2', 'fadi', '05646984112', '1', 'hadi@gmail.com', '123'),
+(8, 'sami', 'radi', '0518125081', '1', 'sami@gmail.com', '1234'),
+(19, 'fadi', 'hani', '0245646464', '0', 'hani@gmail.com', '123');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `reservation`
+--
+
+CREATE TABLE `reservation` (
+  `id` int(11) NOT NULL,
+  `dateDebut` varchar(32) NOT NULL,
+  `dateFin` varchar(32) NOT NULL,
+  `id_chambre` int(11) NOT NULL,
+  `id_client` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `reservation`
+--
+
+INSERT INTO `reservation` (`id`, `dateDebut`, `dateFin`, `id_chambre`, `id_client`) VALUES
+(4, '2022-01-08', '2022-01-010', 2, 4),
+(6, '2022-01-28', '2022-01-29', 3, 8),
+(25, '2022-01-21', '2022-01-22', 3, 8),
+(26, '2022-01-21', '2022-01-22', 3, 8);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `email` varchar(32) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `role` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `password`, `role`) VALUES
+(1, 'fadi@gmail.com', '123', 'client'),
+(2, 'fadi2@gmail.com', '123', 'client');
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `chambre`
+--
+ALTER TABLE `chambre`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `client`
+--
+ALTER TABLE `client`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `reservation`
+--
+ALTER TABLE `reservation`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_chambre` (`id_chambre`),
+  ADD KEY `id_client` (`id_client`);
+
+--
+-- Index pour la table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `chambre`
+--
+ALTER TABLE `chambre`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT pour la table `client`
+--
+ALTER TABLE `client`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT pour la table `reservation`
+--
+ALTER TABLE `reservation`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT pour la table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `reservation`
+--
+ALTER TABLE `reservation`
+  ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`id_chambre`) REFERENCES `chambre` (`id`),
+  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`id_client`) REFERENCES `client` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
